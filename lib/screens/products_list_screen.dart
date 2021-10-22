@@ -27,11 +27,16 @@ class ProductsListScreen extends StatelessWidget {
             return ListTile(
               title: Text(_filteredProducts[index].descripcion),
               subtitle: Text(_filteredProducts[index].marca),
-              leading: FadeInImage.assetNetwork(
-                placeholder: '/assets/images/loading.gif',
-                image: _filteredProducts[index].imagen,
-                imageErrorBuilder: (context, error, stackTrace) =>
-                    Image.asset('/assets/images/loading.gif'),
+              trailing: Image.asset('assets/iconos_certificaciones/${_filteredProducts[index].supervicion}'),
+              leading: SizedBox(
+                width: 50,
+                child: FadeInImage.assetNetwork(
+                  fit: BoxFit.fitWidth,
+                  placeholder: 'assets/images/loading.gif',
+                  image: _filteredProducts[index].imagen,
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      Image.asset('assets/images/loading.gif'),
+                ),
               ),
             );
           },
