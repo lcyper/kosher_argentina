@@ -10,7 +10,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Categorias')),
+      appBar: AppBar(
+        title: const Text('Categorias'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: FutureBuilder(
           future: CategoriesService().getData(),
@@ -30,18 +33,25 @@ class HomeScreen extends StatelessWidget {
                 itemCount: _categoriesList.length,
                 itemBuilder: (context, index) {
                   String _text = _categoriesList[index].name;
-                  return ListTile(
-                    title: Text(_text),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ProductsListScreen(
-                            products: _productsList,
-                            categoryId: _categoriesList[index].id,
-                          ),
-                        ),
-                      );
-                    },
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(_text),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProductsListScreen(
+                                products: _productsList,
+                                categoryId: _categoriesList[index].id,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const Divider(
+                        height: 0,
+                      ),
+                    ],
                   );
                 },
               );
