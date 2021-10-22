@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 String _imageValue(String value) {
-  if (value.contains(RegExp('undefined||null'))) {
-    return '';
-  }
+  // if (value.contains(RegExp('undefined||null'))) {
+  //   return '';
+  // }
   return 'https://www.kosher.org.ar/images/$value';
 }
 
