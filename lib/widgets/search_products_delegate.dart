@@ -45,6 +45,7 @@ class SearchProductsDelegate extends SearchDelegate<String> {
     }
 
     return ListView.builder(
+      itemCount: _filteredProducts.length,
       itemBuilder: (context, index) => ProductListTile(
         filteredProducts: _filteredProducts,
         index: index,
@@ -67,6 +68,7 @@ class SearchProductsDelegate extends SearchDelegate<String> {
       );
     }
     return ListView.builder(
+      itemCount: _filteredProducts.length,
       itemBuilder: (context, index) => ProductListTile(
         filteredProducts: _filteredProducts,
         index: index,
