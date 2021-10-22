@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kosher_ar/models/product.dart';
+import 'package:kosher_ar/widgets/product_list_tile.dart';
 
 class ProductsListScreen extends StatelessWidget {
   final List<Product> products;
@@ -24,29 +25,9 @@ class ProductsListScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: _filteredProducts.length,
           itemBuilder: (context, index) {
-            return Column(
-              children: [
-                ListTile(
-                  title: Text(_filteredProducts[index].descripcion),
-                  subtitle: Text(
-                      '${_filteredProducts[index].marca} - ${_filteredProducts[index].codigoNombre}'),
-                  trailing: Image.asset(
-                      'assets/iconos_certificaciones/${_filteredProducts[index].supervicion}'),
-                  leading: SizedBox(
-                    width: 50,
-                    child: FadeInImage.assetNetwork(
-                      fit: BoxFit.fitWidth,
-                      placeholder: 'assets/images/loading.gif',
-                      image: _filteredProducts[index].imagen,
-                      imageErrorBuilder: (context, error, stackTrace) =>
-                          Container(),
-                    ),
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                ),
-                const Divider(),
-              ],
+            return ProductListTile(
+              filteredProducts: _filteredProducts,
+              index: index,
             );
           },
         ),
