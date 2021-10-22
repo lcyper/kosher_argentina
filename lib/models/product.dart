@@ -5,8 +5,6 @@ String _imageValue(String value) {
     return '';
   }
   return 'https://www.kosher.org.ar/images/$value';
-
-
 }
 
 class Product {
@@ -24,6 +22,7 @@ class Product {
   final String lecheparve;
   final String lecheparveCodigo;
   final String rubro;
+  final String supervicion = 'ajdut_kosher.png';
   Product({
     required this.id,
     required this.sintacc,
