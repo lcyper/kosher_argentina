@@ -1,6 +1,8 @@
 # kosher_ar
 
 A new Flutter project.
+- icon generetor
+- https://romannurik.github.io/AndroidAssetStudio/index.html
 
 ## Getting Started
 
