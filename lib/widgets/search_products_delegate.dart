@@ -5,6 +5,9 @@ import 'package:kosher_ar/widgets/product_list_tile.dart';
 class SearchProductsDelegate extends SearchDelegate<String> {
   final List<Product> allProducts;
 
+  @override
+  final String searchFieldLabel = 'Nombre/Marca/CodigoDeBarras';
+
   SearchProductsDelegate(this.allProducts);
 
   @override
@@ -30,43 +33,46 @@ class SearchProductsDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final List<Product> _filteredProducts = allProducts
-        .where(
-          (Product product) => product.descripcion.toLowerCase().contains(
-                query.toLowerCase(),
-              ),
-        )
-        .toList();
-
-    if (_filteredProducts.isEmpty) {
-      return const Center(
-        child: Text('No hemos encontrado nada.'),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: _filteredProducts.length,
-      itemBuilder: (context, index) => ProductListTile(
-        filteredProducts: _filteredProducts,
-        index: index,
-      ),
-    );
+    return _buildList();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final List<Product> _filteredProducts = allProducts
-        .where(
-          (Product product) => product.descripcion.toLowerCase().contains(
-                query.toLowerCase(),
-              ),
-        )
-        .toList();
+    return _buildList();
+  }
+
+  Widget _buildList() {
+    String _searchValue = query;
+    _searchValue = _searchValue.trim();
+
+    List<Product> _filteredProducts = [];
+    if (int.tryParse(_searchValue) != null) {
+      _filteredProducts = allProducts
+          .where(
+            (Product product) => product.barcode.contains(
+              _searchValue,
+            ),
+          )
+          .toList();
+    } else {
+      _filteredProducts.addAll(allProducts
+          .where(
+            (Product product) =>
+                product.descripcion.toLowerCase().contains(
+                      _searchValue.toLowerCase(),
+                    ) ||
+                product.marca.toLowerCase().contains(
+                      _searchValue.toLowerCase(),
+                    ),
+          )
+          .toList());
+    }
     if (_filteredProducts.isEmpty) {
       return const Center(
         child: Text('No hemos encontrado nada.'),
       );
     }
+
     return ListView.builder(
       itemCount: _filteredProducts.length,
       itemBuilder: (context, index) => ProductListTile(
