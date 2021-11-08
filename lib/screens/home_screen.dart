@@ -53,31 +53,33 @@ class HomeScreen extends StatelessWidget {
                     _showIfIsLocal(context, _data['local']);
                   }
                 },
-                child: ListView.builder(
-                  itemCount: _categoriesList.length,
-                  itemBuilder: (context, index) {
-                    String _text = _categoriesList[index].name;
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(_text),
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ProductsListScreen(
-                                  products: _productsList,
-                                  categoryId: _categoriesList[index].id,
+                child: Scrollbar(
+                  child: ListView.builder(
+                    itemCount: _categoriesList.length,
+                    itemBuilder: (context, index) {
+                      String _text = _categoriesList[index].name;
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(_text),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ProductsListScreen(
+                                    products: _productsList,
+                                    categoryId: _categoriesList[index].id,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        const Divider(
-                          height: 0,
-                        ),
-                      ],
-                    );
-                  },
+                              );
+                            },
+                          ),
+                          const Divider(
+                            height: 0,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               );
             }

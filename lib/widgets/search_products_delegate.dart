@@ -73,11 +73,13 @@ class SearchProductsDelegate extends SearchDelegate<String> {
       );
     }
 
-    return ListView.builder(
-      itemCount: _filteredProducts.length,
-      itemBuilder: (context, index) => ProductListTile(
-        filteredProducts: _filteredProducts,
-        index: index,
+    return Scrollbar(
+      child: ListView.builder(
+        itemCount: _filteredProducts.length,
+        itemBuilder: (context, index) => ProductListTile(
+          filteredProducts: _filteredProducts,
+          index: index,
+        ),
       ),
     );
   }
