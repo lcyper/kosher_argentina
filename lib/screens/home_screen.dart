@@ -39,35 +39,46 @@ class HomeScreen extends StatelessWidget {
               Map _data = snapshot.data as Map;
               _data['categories'];
               // _data.containsKey('categories');
+
               List<Category> _categoriesList = _data['categories'];
-
               _productsList = _data['products'];
+              // _showIfIsLocal(context, _data['local']);
 
-              return ListView.builder(
-                itemCount: _categoriesList.length,
-                itemBuilder: (context, index) {
-                  String _text = _categoriesList[index].name;
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(_text),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ProductsListScreen(
-                                products: _productsList,
-                                categoryId: _categoriesList[index].id,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const Divider(
-                        height: 0,
-                      ),
-                    ],
-                  );
+              return RefreshIndicator(
+                onRefresh: () async {
+                  var _data = await CategoriesService().getData();
+                  if (_data is Map) {
+                    _categoriesList = _data['categories'];
+                    _productsList = _data['products'];
+                    _showIfIsLocal(context, _data['local']);
+                  }
                 },
+                child: ListView.builder(
+                  itemCount: _categoriesList.length,
+                  itemBuilder: (context, index) {
+                    String _text = _categoriesList[index].name;
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(_text),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProductsListScreen(
+                                  products: _productsList,
+                                  categoryId: _categoriesList[index].id,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        const Divider(
+                          height: 0,
+                        ),
+                      ],
+                    );
+                  },
+                ),
               );
             }
             return Center(child: Text('Error: ${snapshot.data}'));
@@ -127,6 +138,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
   showSearchDelegate(context, [String query = '']) async {
     await showSearch<String>(
       context: context,
@@ -135,4 +147,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void _showIfIsLocal(context, bool _isLocal) {
+    String _content = _isLocal ? 'Datos locales' : 'Datos de Internet';
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(_content),
+      duration: const Duration(seconds: 2),
+    ));
+  }
 }
