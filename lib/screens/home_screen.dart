@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:kosher_ar/models/category.dart';
 import 'package:kosher_ar/models/product.dart';
+import 'package:kosher_ar/screens/barcode_scanner_screen.dart';
 import 'package:kosher_ar/screens/products_list_screen.dart';
 import 'package:kosher_ar/services/categories_service.dart';
 import 'package:kosher_ar/widgets/search_products_delegate.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  List<Product> _productsList = [];
 
   @override
   Widget build(BuildContext context) {
-    List<Product> _productsList=[];
-
     return Scaffold(
       drawer: _drawer(),
       appBar: AppBar(
@@ -21,11 +22,8 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             tooltip: 'Search',
             icon: const Icon(Icons.search),
-            onPressed: () async {
-              await showSearch<String>(
-                context: context,
-                delegate: SearchProductsDelegate(_productsList),
-              );
+            onPressed: () {
+              showSearchDelegate(context);
             },
           ),
         ],
@@ -76,6 +74,25 @@ class HomeScreen extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          String barcodeScanResponse = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BarcodeScannerScreen(),
+                  )) ??
+              '';
+          if (barcodeScanResponse.length > 6) {
+            showSearchDelegate(context, barcodeScanResponse);
+          }
+        },
+        tooltip: 'Barcode Scann',
+        child: const Icon(
+          Icons.center_focus_strong_rounded,
+          size: 36,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
@@ -89,7 +106,7 @@ class HomeScreen extends StatelessWidget {
       'Contacto'
     ];
     return Drawer(
-      backgroundColor: Colors.orange,
+      // backgroundColor: Colors.orange,
       child: ListView(
         children: [
           const DrawerHeader(
@@ -110,4 +127,12 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+  showSearchDelegate(context, [String query = '']) async {
+    await showSearch<String>(
+      context: context,
+      query: query,
+      delegate: SearchProductsDelegate(_productsList),
+    );
+  }
+
 }
