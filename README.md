@@ -1,18 +1,20 @@
-# kosher_ar
+# Kosher Argentina
+Una aplicacion con todas las listas Kosher de la region, sencillo y facil de usar.
+---
+---
 
-A new Flutter project.
-- icon generetor
-- https://romannurik.github.io/AndroidAssetStudio/index.html
+## caracteristicas
+- Productos divididos por categorias
+- Supervicion rabinica a la vista
+- Busqueda por codigo de barras
+- Simbolo de celiaco a la vista
+- Busqueda por nombre del producto
+- Busqueda por marca
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Todo:
+- [ ] agregar descripcion de la categoria al inicio de la lista de productos.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [https://romannurik.github.io/AndroidAssetStudio/index.html] Icon Generetor and more
