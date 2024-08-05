@@ -9,7 +9,7 @@ import 'package:kosher_ar/widgets/search_products_delegate.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  List<Product> _productsList = [];
+  final List<Product> _productsList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,8 @@ class HomeScreen extends StatelessWidget {
               // _data.containsKey('categories');
 
               List<Category> _categoriesList = _data['categories'];
-              _productsList = _data['products'];
+              _productsList.clear();
+              _productsList.addAll(_data['products']);
               // _showIfIsLocal(context, _data['local']);
 
               return RefreshIndicator(
@@ -49,7 +50,8 @@ class HomeScreen extends StatelessWidget {
                   var _data = await CategoriesService().getData();
                   if (_data is Map) {
                     _categoriesList = _data['categories'];
-                    _productsList = _data['products'];
+                    _productsList.clear();
+                    _productsList.addAll(_data['products']);
                     _showIfIsLocal(context, _data['local']);
                   }
                 },
