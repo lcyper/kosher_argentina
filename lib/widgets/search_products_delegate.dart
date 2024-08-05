@@ -23,7 +23,7 @@ class SearchProductsDelegate extends SearchDelegate<String> {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    IconButton(
+    return IconButton(
       onPressed: () {
         Navigator.of(context).pop();
       },
