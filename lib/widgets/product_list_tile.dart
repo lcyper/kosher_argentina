@@ -97,7 +97,7 @@ class ProductListTile extends StatelessWidget {
                 contentPadding: const EdgeInsets.all(18),
                 insetPadding: const EdgeInsets.symmetric(
                   horizontal: 18,
-                  vertical: 200,
+                  vertical: 100,
                 ),
                 content: _imageBoxWidget(imageProvider),
               ),
