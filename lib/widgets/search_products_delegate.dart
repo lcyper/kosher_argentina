@@ -6,7 +6,7 @@ class SearchProductsDelegate extends SearchDelegate<String> {
   final List<Product> allProducts;
 
   @override
-  final String searchFieldLabel = 'Nombre/Marca/CodigoDeBarras';
+  String get searchFieldLabel => 'Nombre/Marca/CodigoDeBarras';
 
   SearchProductsDelegate(this.allProducts);
 
@@ -44,9 +44,11 @@ class SearchProductsDelegate extends SearchDelegate<String> {
   Widget _buildList() {
     String _searchValue = query;
     _searchValue = _searchValue.trim();
+    // TODO: add debounce
 
     List<Product> _filteredProducts = [];
     if (int.tryParse(_searchValue) != null) {
+      // the _searchValue is a barcode.
       _filteredProducts = allProducts
           .where(
             (Product product) => product.barcode.contains(
@@ -55,17 +57,17 @@ class SearchProductsDelegate extends SearchDelegate<String> {
           )
           .toList();
     } else {
-      _filteredProducts.addAll(allProducts
-          .where(
-            (Product product) =>
-                product.descripcion.toLowerCase().contains(
-                      _searchValue.toLowerCase(),
-                    ) ||
-                product.marca.toLowerCase().contains(
-                      _searchValue.toLowerCase(),
-                    ),
-          )
-          .toList());
+      // search by product name-description
+      _filteredProducts = allProducts.where(
+        (Product product) {
+          final String fullProductName =
+              "${product.descripcion} ${product.marca}".toLowerCase();
+          // Divide la consulta en palabras
+          final queryWords = _searchValue.split(' ');
+          // Verifica si todas las palabras de la consulta están
+          return queryWords.every((word) => fullProductName.contains(word));
+        },
+      ).toList();
     }
     if (_filteredProducts.isEmpty) {
       return const Center(
