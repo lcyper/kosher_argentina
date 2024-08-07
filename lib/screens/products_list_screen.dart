@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:kosher_ar/models/category.dart';
 import 'package:kosher_ar/models/product.dart';
 import 'package:kosher_ar/widgets/product_list_tile.dart';
 
 class ProductsListScreen extends StatelessWidget {
   final List<Product> products;
-  final String categoryId;
+  final Category category;
 
   const ProductsListScreen(
-      {Key? key, required this.products, required this.categoryId})
+      {Key? key, required this.products, required this.category})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List<Product> _filteredProducts = products
-        .where((Product product) => product.rubroId == categoryId)
+        .where((Product product) => product.rubroId == category.id)
         .toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Productos'),
+        title: Text(
+          category.name,
+          softWrap: true,
+          overflow: TextOverflow.visible,
+          textAlign: TextAlign.center,
+          textScaler: const TextScaler.linear(0.8),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
