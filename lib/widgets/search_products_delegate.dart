@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kosher_ar/helpers/diacritics_aware_string.dart';
 import 'package:kosher_ar/models/product.dart';
 import 'package:kosher_ar/widgets/product_list_tile.dart';
 
@@ -61,9 +62,11 @@ class SearchProductsDelegate extends SearchDelegate<String> {
       _filteredProducts = allProducts.where(
         (Product product) {
           final String fullProductName =
-              "${product.descripcion} ${product.marca}".toLowerCase();
+              "${product.descripcion} ${product.marca} ${product.rubro}"
+                  .withoutDiacriticalMarks
+                  .toLowerCase();
           // Divide la consulta en palabras
-          final queryWords = _searchValue.split(' ');
+          final queryWords = _searchValue.withoutDiacriticalMarks.split(' ');
           // Verifica si todas las palabras de la consulta están
           return queryWords.every((word) => fullProductName.contains(word));
         },
