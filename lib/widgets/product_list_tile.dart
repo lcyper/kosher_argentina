@@ -16,60 +16,102 @@ class ProductListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          title: Text(_filteredProducts[_index].descripcion),
-          subtitle: Column(
-            children: [
-              Text(
-                  '${_filteredProducts[_index].marca} - ${_filteredProducts[_index].codigoNombre} - ${_filteredProducts[_index].lecheparve}'),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (_filteredProducts[_index].barcode.length > 6)
-                      SizedBox(
-                        height: 30,
-                        child: IconButton(
-                            iconSize: 30,
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content:
-                                    Text(_filteredProducts[_index].barcode),
-                              ));
-                            },
-                            icon:
-                                const Icon(Icons.center_focus_strong_rounded)),
+        GestureDetector(
+          onTap: () async {
+            await showDialog(
+              barrierLabel: 'Imagen',
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        _filteredProducts[_index].descripcion,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    if (_filteredProducts[_index].sintacc == 'Si')
-                      SizedBox(
-                        height: 30,
-                        child: Image.asset(
-                          'assets/iconos/gluten_free.png',
-                          fit: BoxFit.fill,
-                        ),
-                      )
-                    // Text(
-                    //     'Codigo de Barras: ${_filteredProducts[_index].barcode}'),
+                      Text(
+                        _filteredProducts[_index].rubro,
+                        maxLines: 2,
+                        style: const TextStyle(fontWeight: FontWeight.w200),
+                        overflow: TextOverflow.ellipsis,
+                        textScaler: const TextScaler.linear(0.7),
+                      ),
+                    ],
+                  ),
+                ),
+                contentPadding: const EdgeInsets.all(18),
+                insetPadding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 100,
+                ),
+                content: Column(
+                  children: [
+                    SizedBox(height: 300, child: _productImage()),
+                    Text(_filteredProducts[_index].codigoNombre),
+                    Text(_filteredProducts[_index].lecheparve),
+                    Text(_filteredProducts[_index].supervision),
+                    Text('Sin Tacc: ${_filteredProducts[_index].sintacc}'),
                   ],
                 ),
               ),
-            ],
-          ),
-          trailing: Image.asset(
-              'assets/iconos_certificaciones/${_filteredProducts[_index].supervicion}'),
-          leading: SizedBox(
-            width: 50,
-            child: _productImage(),
-          ),
+            );
+          },
+          child: ListTile(
+            title: Text(_filteredProducts[_index].descripcion),
+            subtitle: Column(
+              children: [
+                Text(
+                    '${_filteredProducts[_index].marca} - ${_filteredProducts[_index].codigoNombre} - ${_filteredProducts[_index].lecheparve}'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (_filteredProducts[_index].barcode.length > 6)
+                        SizedBox(
+                          height: 30,
+                          child: IconButton(
+                              iconSize: 30,
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content:
+                                      Text(_filteredProducts[_index].barcode),
+                                ));
+                              },
+                              icon: const Icon(
+                                  Icons.center_focus_strong_rounded)),
+                        ),
+                      if (_filteredProducts[_index].sintacc == 'Si')
+                        SizedBox(
+                          height: 30,
+                          child: Image.asset(
+                            'assets/iconos/gluten_free.png',
+                            fit: BoxFit.fill,
+                          ),
+                        )
+                      // Text(
+                      //     'Codigo de Barras: ${_filteredProducts[_index].barcode}'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            trailing: Image.asset(
+                'assets/iconos_certificaciones/${_filteredProducts[_index].supervision}'),
+            leading: SizedBox(
+              width: 50,
+              child: _productImage(),
+            ),
 
-          // contentPadding:
-          //     const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            // contentPadding:
+            //     const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          ),
         ),
         const Divider(),
       ],
@@ -81,30 +123,8 @@ class ProductListTile extends StatelessWidget {
         placeholder: (context, url) => Image.asset('assets/images/loading.gif'),
         imageUrl: _filteredProducts[_index].imagen,
         errorWidget: (context, url, error) => Container(),
-        imageBuilder: (context, imageProvider) => GestureDetector(
-          onTap: () async {
-            await showDialog(
-              barrierLabel: 'Imagen',
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Center(
-                  child: Text(
-                    _filteredProducts[_index].descripcion,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.all(18),
-                insetPadding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 100,
-                ),
-                content: _imageBoxWidget(imageProvider),
-              ),
-            );
-          },
-          child: _imageBoxWidget(imageProvider),
-        ),
+        imageBuilder: (context, imageProvider) =>
+            _imageBoxWidget(imageProvider),
       );
 
   Widget _imageBoxWidget(ImageProvider<Object> imageProvider) => Container(
