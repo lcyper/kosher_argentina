@@ -13,9 +13,12 @@ class ProductsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Product> _filteredProducts = products
-        .where((Product product) => product.rubroId == category.id)
-        .toList();
+    List<Product> _filteredProducts = products.where((Product product) {
+      if (product.hide) {
+        return false;
+      }
+      return product.rubroId == category.id;
+    }).toList();
 
     return Scaffold(
       appBar: AppBar(

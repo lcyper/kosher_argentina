@@ -61,6 +61,9 @@ class SearchProductsDelegate extends SearchDelegate<String> {
       // search by product name-description
       _filteredProducts = allProducts.where(
         (Product product) {
+          if (product.hide) {
+            return false;
+          }
           final String fullProductName =
               "${product.descripcion} ${product.marca} ${product.rubro}"
                   .withoutDiacriticalMarks
