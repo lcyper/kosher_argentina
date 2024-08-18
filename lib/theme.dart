@@ -1,5 +1,10 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 ThemeData themeData = ThemeData(
-        primarySwatch: Colors.orange,
-      );
+  primarySwatch: Colors.orange,
+  primaryColor: Colors.orange,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.orange,
+    foregroundColor: Colors.white,
+  ),
+);
