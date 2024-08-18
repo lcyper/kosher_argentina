@@ -1,10 +1,14 @@
 import 'dart:convert';
 
-String _imageValue(String value) {
+String imageValue(String value, [String fisrtPart = '']) {
   if (value.contains('undefined') || value.contains('null')) {
     return '';
   }
-  return 'https://www.kosher.org.ar/images/$value';
+  if (fisrtPart.isNotEmpty) {
+    return '$fisrtPart$value';
+  } else {
+    return value;
+  }
 }
 
 class Product {
@@ -22,7 +26,9 @@ class Product {
   final String lecheparve;
   final String lecheparveCodigo;
   final String rubro;
-  final String supervicion = 'ajdut_kosher.png';
+  // TODO: add source or rabinical name
+  final String supervision;
+  bool hide;
   Product({
     required this.id,
     required this.sintacc,
@@ -38,6 +44,8 @@ class Product {
     required this.lecheparve,
     required this.lecheparveCodigo,
     required this.rubro,
+    required this.supervision,
+    this.hide = false,
   });
 
   Product copyWith({
@@ -55,6 +63,8 @@ class Product {
     String? lecheparve,
     String? lecheparveCodigo,
     String? rubro,
+    String? supervision,
+    bool? hide,
   }) {
     return Product(
       id: id ?? this.id,
@@ -71,6 +81,8 @@ class Product {
       lecheparve: lecheparve ?? this.lecheparve,
       lecheparveCodigo: lecheparveCodigo ?? this.lecheparveCodigo,
       rubro: rubro ?? this.rubro,
+      supervision: supervision ?? this.supervision,
+      hide: hide ?? this.hide,
     );
   }
 
@@ -90,6 +102,8 @@ class Product {
       'lecheparve': lecheparve,
       'lecheparveCodigo': lecheparveCodigo,
       'rubro': rubro,
+      'supervision': supervision,
+      'hide': hide,
     };
   }
 
@@ -101,7 +115,7 @@ class Product {
       marca: map['marca'] ?? '',
       barcode: map['barcode'] ?? '',
       rubroId: map['rubroId'] ?? '',
-      imagen: _imageValue(map['imagen']),
+      imagen: map['imagen'],
       codigoNombre: map['codigoNombre'] ?? '',
       codigoId: map['codigoId'] ?? '',
       codigoCodigo: map['codigoCodigo'] ?? '',
@@ -109,6 +123,8 @@ class Product {
       lecheparve: map['lecheparve'] ?? '',
       lecheparveCodigo: map['lecheparveCodigo'] ?? '',
       rubro: map['rubro'] ?? '',
+      supervision: map['supervision'] ?? '',
+      hide: map['hide'] ?? false,
     );
   }
 
@@ -119,7 +135,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, sintacc: $sintacc, descripcion: $descripcion, marca: $marca, barcode: $barcode, rubroId: $rubroId, imagen: $imagen, codigoNombre: $codigoNombre, codigoId: $codigoId, codigoCodigo: $codigoCodigo, lecheparveId: $lecheparveId, lecheparve: $lecheparve, lecheparveCodigo: $lecheparveCodigo, rubro: $rubro)';
+    return 'Product(id: $id, sintacc: $sintacc, descripcion: $descripcion, marca: $marca, barcode: $barcode, rubroId: $rubroId, imagen: $imagen, codigoNombre: $codigoNombre, codigoId: $codigoId, codigoCodigo: $codigoCodigo, lecheparveId: $lecheparveId, lecheparve: $lecheparve, lecheparveCodigo: $lecheparveCodigo, rubro: $rubro,supervision: $supervision,hide: $hide)';
   }
 
   @override
@@ -140,7 +156,9 @@ class Product {
         other.lecheparveId == lecheparveId &&
         other.lecheparve == lecheparve &&
         other.lecheparveCodigo == lecheparveCodigo &&
-        other.rubro == rubro;
+        other.rubro == rubro &&
+        other.supervision == supervision &&
+        other.hide == hide;
   }
 
   @override
@@ -158,6 +176,8 @@ class Product {
         lecheparveId.hashCode ^
         lecheparve.hashCode ^
         lecheparveCodigo.hashCode ^
-        rubro.hashCode;
+        rubro.hashCode ^
+        supervision.hashCode ^
+        hide.hashCode;
   }
 }

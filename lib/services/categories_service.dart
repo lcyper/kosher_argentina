@@ -31,6 +31,9 @@ class CategoriesService {
 
       List<Product> _products = [];
       for (Map<String, dynamic> map in _productsList) {
+        map['supervicion'] = 'ajdut_kosher.png';
+        map['imagen'] =
+            imageValue(map['imagen'], 'https://www.kosher.org.ar/images/');
         _products.add(Product.fromMap(map));
       }
 
@@ -62,7 +65,7 @@ class CategoriesService {
       }
 
       debugPrint('Error: ' + e.toString());
-      return {'Error': e.toString()};
+      return {'Error': 'Tienes internet? Entonces es un error del Servidor.'};
     }
   }
 
