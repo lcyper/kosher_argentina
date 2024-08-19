@@ -35,10 +35,7 @@ class ProductsListScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: _filteredProducts.length,
           itemBuilder: (context, index) {
-            return ProductListTile(
-              filteredProducts: _filteredProducts,
-              index: index,
-            );
+            return ProductListTile(product: _filteredProducts[index]);
           },
         ),
       ),

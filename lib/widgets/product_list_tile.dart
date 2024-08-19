@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:kosher_ar/models/product.dart';
 
 class ProductListTile extends StatelessWidget {
-  const ProductListTile(
-      {Key? key, required List<Product> filteredProducts, required int index})
-      : _filteredProducts = filteredProducts,
-        _index = index,
-        super(key: key);
-
-  final List<Product> _filteredProducts;
-  final int _index;
+  final Product product;
+  const ProductListTile({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +23,12 @@ class ProductListTile extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        _filteredProducts[_index].descripcion,
+                        product.descripcion,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        _filteredProducts[_index].rubro,
+                        product.rubro,
                         maxLines: 2,
                         style: const TextStyle(fontWeight: FontWeight.w200),
                         overflow: TextOverflow.ellipsis,
@@ -48,28 +45,28 @@ class ProductListTile extends StatelessWidget {
                 content: Column(
                   children: [
                     SizedBox(height: 300, child: _productImage()),
-                    Text(_filteredProducts[_index].codigoNombre),
-                    Text(_filteredProducts[_index].lecheparve),
-                    Text(_filteredProducts[_index].supervision),
-                    Text('Sin Tacc: ${_filteredProducts[_index].sintacc}'),
+                    Text(product.codigoNombre),
+                    Text(product.lecheparve),
+                    Text(product.supervision),
+                    Text('Sin Tacc: ${product.sintacc}'),
                   ],
                 ),
               ),
             );
           },
           child: ListTile(
-            title: Text(_filteredProducts[_index].descripcion),
+            title: Text(product.descripcion),
             subtitle: Column(
               children: [
                 Text(
-                    '${_filteredProducts[_index].marca} - ${_filteredProducts[_index].codigoNombre} - ${_filteredProducts[_index].lecheparve}'),
+                    '${product.marca} - ${product.codigoNombre} - ${product.lecheparve}'),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      if (_filteredProducts[_index].barcode.length > 6)
+                      if (product.barcode.length > 6)
                         SizedBox(
                           height: 30,
                           child: IconButton(
@@ -80,14 +77,13 @@ class ProductListTile extends StatelessWidget {
                                     .hideCurrentSnackBar();
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
-                                  content:
-                                      Text(_filteredProducts[_index].barcode),
+                                  content: Text(product.barcode),
                                 ));
                               },
                               icon: const Icon(
                                   Icons.center_focus_strong_rounded)),
                         ),
-                      if (_filteredProducts[_index].sintacc == 'Si')
+                      if (product.sintacc == 'Si')
                         SizedBox(
                           height: 30,
                           child: Image.asset(
@@ -96,14 +92,14 @@ class ProductListTile extends StatelessWidget {
                           ),
                         )
                       // Text(
-                      //     'Codigo de Barras: ${_filteredProducts[_index].barcode}'),
+                      //     'Codigo de Barras: ${product.barcode}'),
                     ],
                   ),
                 ),
               ],
             ),
             trailing: Image.asset(
-                'assets/iconos_certificaciones/${_filteredProducts[_index].supervision}'),
+                'assets/iconos_certificaciones/${product.supervision}'),
             leading: SizedBox(
               width: 50,
               child: _productImage(),
@@ -121,7 +117,7 @@ class ProductListTile extends StatelessWidget {
   Widget _productImage() => CachedNetworkImage(
         fit: BoxFit.fitWidth,
         placeholder: (context, url) => Image.asset('assets/images/loading.gif'),
-        imageUrl: _filteredProducts[_index].imagen,
+        imageUrl: product.imagen,
         errorWidget: (context, url, error) => Container(),
         imageBuilder: (context, imageProvider) =>
             _imageBoxWidget(imageProvider),
