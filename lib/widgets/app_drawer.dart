@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 Drawer appDrawer() {
-  // TODO: value, onTopNavigatorPageName
   List<String> menuOptions = [
     'Supervisaciones',
     'Donaciones',
@@ -24,7 +23,9 @@ Drawer appDrawer() {
         ...menuOptions.map(
           (option) => ListTile(
             title: Text(option),
-            onTap: () {},
+            onTap: () {
+              // TODO: value, onTopNavigatorPageName
+            },
           ),
         )
       ],
