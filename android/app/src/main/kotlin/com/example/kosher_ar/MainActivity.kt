@@ -1,4 +1,4 @@
-package com.example.kosher_ar
+package com.lcyper.kosher_ar
 
 import io.flutter.embedding.android.FlutterActivity
 
