@@ -22,7 +22,8 @@ Una aplicacion con todas las listas Kosher de la region, sencillo y facil de usa
 ### Tareas:
 - [x] agregar descripcion de la categoria al inicio de la lista de productos.
 - [x] agregar las alertas de ajdut kosher
-- [ ] agregar debouncer en search
+- [x] agregar debouncer en search
+- [ ] agregar diferencias en productos (nuevos, eliminados, modificados)[https://chat.deepseek.com/a/chat/s/3dbf43a7-99a6-456c-ad96-7e3701d739da]
 - [ ] revisar todos
 - [ ] pasar pedidos de datos a un cubit
 - [ ] agregar lista de uk, brasil (dbk), usa (ou), otros rabinatos.
