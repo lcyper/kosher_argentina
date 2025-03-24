@@ -19,10 +19,10 @@ class AppBarcodeScannerWidget extends StatefulWidget {
   }
 
   @override
-  _AppBarcodeState createState() => _AppBarcodeState();
+  AppBarcodeState createState() => AppBarcodeState();
 }
 
-class _AppBarcodeState extends State<AppBarcodeScannerWidget> {
+class AppBarcodeState extends State<AppBarcodeScannerWidget> {
   @override
   Widget build(BuildContext context) {
     return _BarcodePermissionWidget();

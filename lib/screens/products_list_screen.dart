@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:kosher_ar/models/category.dart';
+import 'package:kosher_ar/models/category_model.dart';
 import 'package:kosher_ar/models/product.dart';
 import 'package:kosher_ar/widgets/product_list_tile.dart';
 
 class ProductsListScreen extends StatelessWidget {
   final List<Product> products;
-  final Category category;
+  final CategoryModel category;
 
-  const ProductsListScreen(
-      {Key? key, required this.products, required this.category})
+  ProductsListScreen({Key? key, required this.products, required this.category})
       : super(key: key);
+
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    List<Product> _filteredProducts = products.where((Product product) {
+    List<Product> filteredProducts = products.where((Product product) {
       if (product.hide) {
         return false;
       }
@@ -32,11 +33,18 @@ class ProductsListScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: ListView.builder(
-          itemCount: _filteredProducts.length,
-          itemBuilder: (context, index) {
-            return ProductListTile(product: _filteredProducts[index]);
-          },
+        child: Scrollbar(
+          controller: scrollController,
+          interactive: true,
+          radius: const Radius.circular(8),
+          thickness: 8,
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: filteredProducts.length,
+            itemBuilder: (context, index) {
+              return ProductListTile(product: filteredProducts[index]);
+            },
+          ),
         ),
       ),
     );
