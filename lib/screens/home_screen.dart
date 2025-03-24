@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kosher_ar/helpers/is_html_empty.dart';
 import 'package:kosher_ar/models/category_model.dart';
 import 'package:kosher_ar/models/filter_model.dart';
 import 'package:kosher_ar/models/product.dart';
@@ -204,8 +205,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
- 
-
   showSearchDelegate(context, [String query = '']) async {
     await showSearch<String>(
       context: context,
@@ -245,7 +244,7 @@ class HomeScreen extends StatelessWidget {
     // }
     for (final CategoryModel category in _categoriesList) {
       // añadir la descripcion de cada categoria como un producto.
-      if (category.description.trim().isEmpty ||
+      if (isHtmlEmpty(category.description) ||
           !category.description.contains(' ')) {
         continue;
       }
