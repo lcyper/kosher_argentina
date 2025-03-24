@@ -19,10 +19,14 @@ Una aplicacion con todas las listas Kosher de la region, sencillo y facil de usa
 
 
 
-### Todo:
+### Tareas:
 - [x] agregar descripcion de la categoria al inicio de la lista de productos.
-- [x] agregar las alertas: 
-https://www.kosher.org.ar/api/alertas.php
+- [x] agregar las alertas de ajdut kosher
+- [ ] agregar debouncer en search
+- [ ] revisar todos
+- [ ] pasar pedidos de datos a un cubit
+- [ ] agregar lista de uk, brasil (dbk), usa (ou), otros rabinatos.
+
 
 - [https://romannurik.github.io/AndroidAssetStudio/index.html] Icon Generetor and more
 
