@@ -1,5 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:kosher_ar/helpers/clean_html.dart';
+import 'package:kosher_ar/helpers/contains_html_tags.dart';
 import 'package:kosher_ar/models/product.dart';
 
 class ProductListTile extends StatelessWidget {
@@ -8,6 +12,10 @@ class ProductListTile extends StatelessWidget {
     Key? key,
     required this.product,
   }) : super(key: key);
+
+  _getSertificatesLocation(String imageFileName) {
+    return 'assets/iconos_certificaciones/$imageFileName';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,39 +31,73 @@ class ProductListTile extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        product.descripcion,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        product.rubro,
+                        '${product.rubro} - ${product.marca}',
                         maxLines: 2,
                         style: const TextStyle(fontWeight: FontWeight.w200),
                         overflow: TextOverflow.ellipsis,
                         textScaler: const TextScaler.linear(0.7),
                       ),
+                      containsHtmlTags(product.descripcion)
+                          ? HtmlWidget(cleanHtml(product.descripcion))
+                          : Text(
+                              product.descripcion,
+                              maxLines: 20,
+                              overflow: TextOverflow.ellipsis,
+                            )
                     ],
                   ),
                 ),
                 contentPadding: const EdgeInsets.all(18),
                 insetPadding: const EdgeInsets.symmetric(
                   horizontal: 18,
-                  vertical: 100,
+                  vertical: 50,
                 ),
                 content: Column(
                   children: [
-                    SizedBox(height: 300, child: _productImage()),
-                    Text(product.codigoNombre),
-                    Text(product.lecheparve),
-                    Text(product.supervision),
-                    Text('Sin Tacc: ${product.sintacc}'),
+                    Expanded(
+                      flex: 1,
+                      child: _productImage(),
+                    ),
+                    Text('${product.codigoNombre} - ${product.lecheparve}'),
+                    SizedBox(
+                      height: 50,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                              _getSertificatesLocation(product.supervision)),
+                          const SizedBox(width: 20),
+                          Image.asset(
+                            'assets/iconos/gluten_free.png',
+                            fit: BoxFit.fill,
+                          )
+                        ],
+                      ),
+                    ),
+                    if (product.barcode.length > 1)
+                      for (var item in product.barcode.split(','))
+                        Text(item.trim())
                   ],
                 ),
               ),
             );
           },
           child: ListTile(
-            title: Text(product.descripcion),
+            title: containsHtmlTags(product.descripcion)
+                ? HtmlWidget(
+                    cleanHtml(product.descripcion),
+                    onTapUrl: (url) async {
+                      final scaffoldMessenger = ScaffoldMessenger.of(context);
+                      await Clipboard.setData(
+                          ClipboardData(text: url)); // Copy the URL
+                      scaffoldMessenger.showSnackBar(
+                        const SnackBar(
+                            content: Text('URL copiada en el portapapeles!')),
+                      ); // Show a confirmation message
+                      return false;
+                    },
+                  )
+                : Text(product.descripcion),
             subtitle: Column(
               children: [
                 Text(
@@ -98,8 +140,8 @@ class ProductListTile extends StatelessWidget {
                 ),
               ],
             ),
-            trailing: Image.asset(
-                'assets/iconos_certificaciones/${product.supervision}'),
+            trailing:
+                Image.asset(_getSertificatesLocation(product.supervision)),
             leading: SizedBox(
               width: 50,
               child: _productImage(),
@@ -115,7 +157,7 @@ class ProductListTile extends StatelessWidget {
   }
 
   Widget _productImage() => CachedNetworkImage(
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.scaleDown,
         placeholder: (context, url) => Image.asset('assets/images/loading.gif'),
         imageUrl: product.imagen,
         errorWidget: (context, url, error) => Container(),
