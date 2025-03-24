@@ -33,10 +33,7 @@ class HomeScreen extends StatelessWidget {
   //   return pesajFilter.isActive;
   // }
 
-  void toggleShown() {
-    // final bool isSelected = currentFilter.isActive;
-
-    // List<Filter> activeFilters = getActiveFilters();
+  void toggleProductsToShow() {
     for (Product product in _productsList) {
       if (product.rubro.contains('NOPUBLICAR')) {
         // hide products that not need to be shown
@@ -92,7 +89,7 @@ class HomeScreen extends StatelessWidget {
             PopupMenuButton(
               position: PopupMenuPosition.under,
               onCanceled: () {
-                toggleShown();
+                toggleProductsToShow();
               },
               icon: const Icon(Icons.settings),
               itemBuilder: (
